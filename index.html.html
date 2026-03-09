@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>거래처 등록 | 그린홈시스</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #2D3E50;
+      --navy-dark: #1E2D3D;
+      --green: #8DC21F;
+      --green-dark: #7AB01A;
+      --white: #FFFFFF;
+      --bg: #F5F6F8;
+      --card: #FFFFFF;
+      --border: #E4E7EB;
+      --focus: #8DC21F;
+      --text: #1A2332;
+      --text2: #4A5568;
+      --muted: #8896A6;
+      --light: #B0BAC5;
+      --input-bg: #F8F9FB;
+      --red: #E53E3E;
+      --r: 10px;
+      --rl: 16px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Sans KR', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page { max-width: 480px; margin: 0 auto; padding: 0 16px 60px; }
+
+    /* Hero */
+    .hero { text-align: center; padding: 52px 8px 28px; }
+
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--green); color: var(--white);
+      font-size: 11px; font-weight: 700;
+      padding: 5px 14px; border-radius: 100px;
+      letter-spacing: 0.02em; margin-bottom: 20px;
+    }
+    .badge svg { width: 13px; height: 13px; }
+
+    .hero h1 {
+      font-size: 28px; font-weight: 800; color: var(--text);
+      line-height: 1.35; letter-spacing: -0.04em; margin-bottom: 14px;
+    }
+
+    .hero-desc { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+    /* Trust */
+    .trust { display: flex; justify-content: center; gap: 8px; padding-bottom: 24px; flex-wrap: wrap; }
+
+    .pill {
+      display: flex; align-items: center; gap: 5px;
+      background: var(--white); border: 1px solid var(--border);
+      padding: 7px 14px; border-radius: 100px;
+      font-size: 12px; font-weight: 500; color: var(--text2);
+    }
+    .pill svg { width: 14px; height: 14px; color: var(--green); flex-shrink: 0; }
+
+    /* Card */
+    .card {
+      background: var(--card); border-radius: var(--rl);
+      border: 1px solid var(--border);
+      padding: 32px 24px 28px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .card-head { margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
+    .card-head h2 { font-size: 17px; font-weight: 700; letter-spacing: -0.02em; }
+    .card-head p { font-size: 12px; color: var(--light); margin-top: 4px; }
+
+    /* Fields */
+    .f { margin-bottom: 20px; }
+    .f label { display: block; font-size: 13px; font-weight: 600; color: var(--text2); margin-bottom: 8px; }
+    .f label .rq { color: var(--green); margin-left: 2px; }
+
+    .f input, .f textarea {
+      width: 100%; padding: 13px 16px;
+      font-size: 15px; font-family: 'Noto Sans KR', sans-serif;
+      color: var(--text); background: var(--input-bg);
+      border: 1.5px solid transparent; border-radius: var(--r);
+      outline: none; transition: all 0.2s;
+    }
+    .f input::placeholder, .f textarea::placeholder { color: var(--light); font-weight: 300; }
+    .f input:focus, .f textarea:focus { border-color: var(--focus); background: var(--white); box-shadow: 0 0 0 3px rgba(141,194,31,0.10); }
+    .f textarea { min-height: 52px; resize: vertical; line-height: 1.6; }
+    .f .e { font-size: 12px; color: var(--red); margin-top: 6px; display: none; }
+    .f.error input { border-color: var(--red); }
+    .f.error .e { display: block; }
+
+    /* Consent */
+    .cst { margin: 24px 0; padding: 14px 16px; background: var(--input-bg); border-radius: var(--r); }
+    .cst-row { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; }
+
+    .cst-row input[type="checkbox"] {
+      appearance: none; width: 20px; height: 20px;
+      border: 1.5px solid var(--border); border-radius: 5px;
+      flex-shrink: 0; margin-top: 1px; cursor: pointer;
+      transition: all 0.15s; position: relative; background: var(--white);
+    }
+    .cst-row input[type="checkbox"]:checked { background: var(--green); border-color: var(--green); }
+    .cst-row input[type="checkbox"]:checked::after {
+      content: ''; position: absolute; left: 6px; top: 2px;
+      width: 5px; height: 10px; border: solid white;
+      border-width: 0 2px 2px 0; transform: rotate(45deg);
+    }
+
+    .cst-txt { font-size: 13px; color: var(--text2); line-height: 1.5; }
+    .cst-txt a { color: var(--navy); text-decoration: underline; text-underline-offset: 2px; }
+
+    .cst-detail {
+      margin-top: 12px; padding-top: 12px;
+      border-top: 1px solid var(--border);
+      font-size: 11px; color: var(--light); line-height: 1.8; display: none;
+    }
+    .cst-detail.show { display: block; }
+
+    /* Button */
+    .btn {
+      width: 100%; padding: 16px; font-size: 16px; font-weight: 700;
+      font-family: 'Noto Sans KR', sans-serif; color: var(--white);
+      background: var(--navy); border: none; border-radius: var(--r);
+      cursor: pointer; transition: all 0.2s;
+    }
+    .btn:hover { background: var(--navy-dark); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(45,62,80,0.25); }
+    .btn:active { transform: translateY(0); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .btn .sp { display: none; width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.6s linear infinite; margin: 0 auto; }
+    .btn.ld .bt { display: none; }
+    .btn.ld .sp { display: block; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Success */
+    .suc { display: none; background: var(--card); border-radius: var(--rl); border: 1px solid var(--border); padding: 48px 24px; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.04); animation: fu 0.35s ease; }
+    @keyframes fu { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .suc-ic { width: 56px; height: 56px; background: var(--green); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 18px; }
+    .suc-ic svg { width: 28px; height: 28px; color: white; }
+    .suc h2 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+    .suc > p { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 24px; }
+    .suc .ib { background: var(--input-bg); border-radius: var(--r); padding: 16px 20px; text-align: left; margin-bottom: 24px; }
+    .suc .ir { display: flex; justify-content: space-between; padding: 5px 0; font-size: 13px; }
+    .ir .il { color: var(--light); }
+    .ir .iv { color: var(--text); font-weight: 500; }
+    .bbk { display: inline-flex; padding: 11px 28px; font-size: 14px; font-weight: 500; font-family: 'Noto Sans KR', sans-serif; color: var(--text2); background: var(--input-bg); border: 1px solid var(--border); border-radius: var(--r); cursor: pointer; transition: all 0.2s; }
+    .bbk:hover { background: var(--border); }
+
+    .foot { text-align: center; padding: 24px 0; font-size: 11px; color: var(--light); line-height: 1.6; }
+    .foot a { color: var(--muted); text-decoration: none; }
+
+    @media (max-width: 480px) {
+      .page { padding: 0 12px 40px; }
+      .card { padding: 28px 20px 24px; border-radius: 14px; }
+      .hero { padding: 40px 4px 20px; }
+      .hero h1 { font-size: 24px; }
+      .trust { gap: 6px; }
+      .pill { padding: 6px 11px; font-size: 11px; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="hero">
+    <div class="badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      현재 거래처 등록 접수 중
+    </div>
+    <h1>정품 완성창,<br>이 단가에 가능합니다</h1>
+    <p class="hero-desc">본사 직영 · LX하우시스 정품 · 10년 품질보증<br>지금 등록하시고 이번달 혜택 받아보세요.</p>
+  </div>
+
+  <div class="trust">
+    <div class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>본사 직영 단가</div>
+    <div class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>당일 견적 회신</div>
+    <div class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>10년 품질보증</div>
+  </div>
+
+  <div class="card" id="formCard">
+    <div class="card-head">
+      <h2>거래처 정보 입력</h2>
+      <p>* 표시 항목은 필수 입력사항입니다</p>
+    </div>
+
+    <div class="f" id="field-company">
+      <label>상호명 <span class="rq">*</span></label>
+      <input type="text" id="company" placeholder="귀사의 상호명을 입력해주세요" autocomplete="organization">
+      <div class="e">상호명을 입력해주세요.</div>
+    </div>
+    <div class="f" id="field-address">
+      <label>주소 <span class="rq">*</span></label>
+      <input type="text" id="address" placeholder="귀사의 주소를 입력해주세요" autocomplete="street-address">
+      <div class="e">주소를 입력해주세요.</div>
+    </div>
+    <div class="f" id="field-phone">
+      <label>연락처 <span class="rq">*</span></label>
+      <input type="tel" id="phone" placeholder="등록 안내를 받으실 연락처" autocomplete="tel">
+      <div class="e">연락처를 입력해주세요.</div>
+    </div>
+    <div class="f" id="field-business">
+      <label>업종·업태 <span class="rq">*</span></label>
+      <input type="text" id="business" placeholder="예) 인테리어, 창호, 건설업 등" autocomplete="off">
+      <div class="e">업종·업태를 입력해주세요.</div>
+    </div>
+    <div class="f" id="field-memo">
+      <label>기타 전달사항</label>
+      <textarea id="memo" placeholder="추가 문의사항이 있으시면 입력해주세요"></textarea>
+    </div>
+
+    <input type="hidden" id="source" value="Instagram DM">
+    <input type="hidden" id="submitDate" value="">
+
+    <div class="cst">
+      <label class="cst-row">
+        <input type="checkbox" id="consent">
+        <span class="cst-txt"><a href="javascript:void(0)" onclick="toggleDetail()">개인정보 수집 및 이용</a>에 동의합니다.</span>
+      </label>
+      <div class="cst-detail" id="consentDetail">
+        <strong>수집 항목:</strong> 상호명, 주소, 연락처, 업종·업태<br>
+        <strong>수집 목적:</strong> 거래처 등록 요청 접수 및 안내<br>
+        <strong>보유 기간:</strong> 등록 완료 후 1년간 보관 후 파기<br>
+        ※ 동의를 거부하실 수 있으나, 거부 시 등록 접수가 어렵습니다.
+      </div>
+    </div>
+
+    <button class="btn" id="submitBtn" onclick="handleSubmit()">
+      <span class="bt">지금 바로 등록하기</span>
+      <div class="sp"></div>
+    </button>
+  </div>
+
+  <div class="suc" id="successCard">
+    <div class="suc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+    <h2>등록 요청이 완료되었습니다</h2>
+    <p>접수된 정보를 확인 후<br>담당자가 빠르게 연락드리겠습니다.</p>
+    <div class="ib" id="summaryBox"></div>
+    <button class="bbk" onclick="resetForm()">새로운 요청하기</button>
+  </div>
+
+  <div class="foot">그린홈시스 Greenhomesys<br><a href="https://greenhomesys.com" target="_blank">greenhomesys.com</a></div>
+</div>
+
+<script>
+const GOOGLE_SHEET_WEBHOOK_URL = '[https://script.google.com/macros/s/AKfycbyETLn5BNJZC6Wh7-1zMvdIuW6535wdDj65ZGnuCo7MiRbil4EMYuFuZ2Qsa1wo71UX/exec](https://script.google.com/macros/s/AKfycbyETLn5BNJZC6Wh7-1zMvdIuW6535wdDj65ZGnuCo7MiRbil4EMYuFuZ2Qsa1wo71UX/exec)';
+
+function toggleDetail() { document.getElementById('consentDetail').classList.toggle('show'); }
+
+function validateField(id) {
+  const f = document.getElementById('field-'+id), i = document.getElementById(id);
+  if (!f||!i) return true;
+  if (!i.value.trim()) { f.classList.add('error'); return false; }
+  f.classList.remove('error'); return true;
+}
+
+['company','address','phone','business'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', () => document.getElementById('field-'+id)?.classList.remove('error'));
+});
+
+function handleSubmit() {
+  let v = true;
+  ['company','address','phone','business'].forEach(id => { if (!validateField(id)) v = false; });
+  if (!document.getElementById('consent').checked) { alert('개인정보 수집 및 이용에 동의해주세요.'); return; }
+  if (!v) return;
+
+  const n = new Date();
+  const ds = n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0')+'-'+String(n.getDate()).padStart(2,'0')+' '+String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0');
+
+  const d = {
+    접수일시: ds, 문의경로: 'Instagram DM',
+    상호명: document.getElementById('company').value.trim(),
+    주소: document.getElementById('address').value.trim(),
+    연락처: document.getElementById('phone').value.trim(),
+    업종업태: document.getElementById('business').value.trim(),
+    기타전달사항: document.getElementById('memo').value.trim()||'-'
+  };
+
+  const b = document.getElementById('submitBtn');
+  b.classList.add('ld'); b.disabled = true;
+
+  if (GOOGLE_SHEET_WEBHOOK_URL) {
+    fetch(GOOGLE_SHEET_WEBHOOK_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify(d) }).catch(e=>console.log(e));
+  }
+
+  setTimeout(() => {
+    document.getElementById('formCard').style.display = 'none';
+    const sc = document.getElementById('successCard');
+    sc.style.display = 'block';
+    document.getElementById('summaryBox').innerHTML = `
+      <div class="ir"><span class="il">접수일시</span><span class="iv">${d.접수일시}</span></div>
+      <div class="ir"><span class="il">상호명</span><span class="iv">${d.상호명}</span></div>
+      <div class="ir"><span class="il">연락처</span><span class="iv">${d.연락처}</span></div>
+      <div class="ir"><span class="il">업종·업태</span><span class="iv">${d.업종업태}</span></div>
+      <div class="ir"><span class="il">문의 경로</span><span class="iv">${d.문의경로}</span></div>`;
+    window.scrollTo({top:0,behavior:'smooth'});
+  }, GOOGLE_SHEET_WEBHOOK_URL ? 800 : 400);
+}
+
+function resetForm() {
+  document.getElementById('formCard').style.display = 'block';
+  document.getElementById('successCard').style.display = 'none';
+  ['company','address','phone','business','memo'].forEach(id => { const e=document.getElementById(id); if(e) e.value=''; });
+  document.getElementById('consent').checked = false;
+  const b = document.getElementById('submitBtn');
+  b.classList.remove('ld'); b.disabled = false;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
